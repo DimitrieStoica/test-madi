@@ -5,7 +5,6 @@ var fs         = require ('fs');
 var dataJSON;
 
 var net = require('net');
-var client = new net.Socket();
 var options = {
   noColor: true
 };
@@ -30,7 +29,7 @@ var routes = function(router, app) {
     var ip   = "54.191.207.214";
     var port = 8080;
     var type = req.params.type;
-    var returnString;
+    var client = new net.Socket();
 
     client.connect(port, ip, function(c) {
       console.log('Connected');
@@ -43,7 +42,7 @@ var routes = function(router, app) {
     });
 
     client.on('data', function(data) {
-      returnString = data.toString('utf8');
+      var returnString = data.toString('utf8');
       console.log(returnString);
       client.end();
     });
@@ -53,6 +52,7 @@ var routes = function(router, app) {
     });
 
     //res.send(prettyjson.render(dataJSON, options));
+    console.log(returnString);
     console.log("###############################");
     res.send(returnString);
   });
