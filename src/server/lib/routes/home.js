@@ -4,8 +4,6 @@ var prettyjson = require('prettyjson');
 var fs         = require ('fs');
 var dataJSON;
 
-var close_connection_flag = false;
-
 var net = require('net');
 var client = new net.Socket();
 var options = {
@@ -45,36 +43,9 @@ var routes = function(router, app) {
     });
 
     client.on('data', function(data) {
-returnString = data.toString('utf8');
-console.log(returnString);
-     switch(returnString){
-
-        case 'caca':
-          close_connection_flag = true;
-          flag_raised_by_server = 'caca-flag'
-          break;
-        case 'Robotino1':
-          close_connection_flag = true;
-          flag_raised_by_server = 'robot-flag';
-          break;
-        default:
-          // do nothing.
-          break;     
-
-      }
-
-console.log(close_connection_flag);
-   if (close_connection_flag) {
-      console.log("here");
-      client.end();
-    }
-
-/*
-      console.log(data);
       returnString = data.toString('utf8');
-      dataJSON = {"data" : returnString};
+      console.log(returnString);
       client.end();
-*/
     });
 
     client.on('close', function() {
@@ -85,7 +56,6 @@ console.log(close_connection_flag);
     console.log("###############################");
     res.send(returnString);
   });
-
 }
 
 module.exports = routes;
