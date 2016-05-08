@@ -1,0 +1,88 @@
+var path       = require("path");
+var handlebars = require('handlebars');
+var prettyjson = require('prettyjson');
+var fs         = require ('fs');
+var dataJSON;
+var close_connection_flag = false;
+
+var net = require('net');
+var client = new net.Socket();
+var returnString;
+var options = {
+  noColor: true
+};
+
+var routes = function(router, app) {
+
+  router.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "PATCH, POST, GET, PUT, DELETE, OPTIONS");
+    if ('OPTIONS' === req.method) {
+      return res.send(200);
+    }
+    next();
+  });
+
+  router.get('/', function(req, res) {
+    handlebars.registerPartial('content', fs.readFileSync(__dirname + '/../views/partials/home.html', 'utf8'));
+    res.render('layout');
+  });
+
+  router.get('/client/:type', function(req, res) {
+    var ip   = "54.191.207.214";
+    var port = 8080;
+    var type = req.params.type;
+
+    client.connect(port, ip, function(c) {
+      console.log('Connected');
+      client.write(type);
+    });
+
+    client.on('error', function(ex) {
+      console.log("handled error");
+      console.log(ex);
+    });
+
+    client.on('data', function(data) {
+     var flag_raised_by_server;
+     switch(data){
+
+        case 'caca':
+          close_connection_flag = true;
+          break;
+        case 'Robotino1':
+          close_connection_flag = true;
+          flag_raised_by_server = 'ds';
+          break;
+        default:
+          // do nothing.
+          break;     
+
+      }
+
+
+   if (flag_raised_by_server) {
+      res.end('flag raised by server is: ' + flag_raised_by_server);
+      client.destroy();
+    }
+
+/*
+      console.log(data);
+      returnString = data.toString('utf8');
+      dataJSON = {"data" : returnString};
+      client.end();
+*/
+    });
+
+    client.on('end', function() {
+      res.end();
+      console.log('Connection closed');
+    });
+
+    //res.send(prettyjson.render(dataJSON, options));
+    res.send(returnString);
+  });
+
+}
+
+module.exports = routes;

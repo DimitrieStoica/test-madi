@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "0.12"
+services:
+  - mongodb
+deploy:
+  provider: openshift
+  user: MY_USERNAME
+  password: MY_PASSWORD
+  domain: MY_DOMAIN

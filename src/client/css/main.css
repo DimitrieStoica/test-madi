@@ -1,0 +1,12 @@
+.home h1 {
+  font-size: 36px;
+  font-style: italic;
+}
+
+.home h2 {
+  font-size: 20px;
+}
+
+.home p {
+  color: grey
+}
