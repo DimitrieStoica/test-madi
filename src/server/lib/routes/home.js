@@ -45,6 +45,7 @@ var routes = function(router, app) {
     client.on('data', function(data) {
       returnString = data.toString('utf8');
       res.write(returnString);
+      console.log("%%%%%%%%%");
       console.log(returnString);
       client.end();
     });
@@ -54,7 +55,6 @@ var routes = function(router, app) {
     });
 
     //res.send(prettyjson.render(dataJSON, options));
-    console.log(returnString);
     console.log("###############################");
     res.send();
   });
