@@ -56,7 +56,7 @@ var routes = function(router, app) {
 
     //res.send(prettyjson.render(dataJSON, options));
     console.log("###############################");
-    res.send();
+    res.end();
   });
 }
 
