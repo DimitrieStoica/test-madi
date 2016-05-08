@@ -30,6 +30,7 @@ var routes = function(router, app) {
     var port = 8080;
     var type = req.params.type;
     var client = new net.Socket();
+    var returnString;
 
     client.connect(port, ip, function(c) {
       console.log('Connected');
@@ -42,7 +43,8 @@ var routes = function(router, app) {
     });
 
     client.on('data', function(data) {
-      var returnString = data.toString('utf8');
+      returnString = data.toString('utf8');
+      res.write(returnString);
       console.log(returnString);
       client.end();
     });
@@ -54,7 +56,7 @@ var routes = function(router, app) {
     //res.send(prettyjson.render(dataJSON, options));
     console.log(returnString);
     console.log("###############################");
-    res.send(returnString);
+    res.send();
   });
 }
 
