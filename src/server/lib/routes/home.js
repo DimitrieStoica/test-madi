@@ -3,6 +3,7 @@ var handlebars = require('handlebars');
 var prettyjson = require('prettyjson');
 var fs         = require ('fs');
 var dataJSON;
+var returnString;
 
 var net = require('net');
 var options = {
@@ -25,12 +26,21 @@ var routes = function(router, app) {
     res.render('layout');
   });
 
-  router.get('/client/:type', function(req, res) {
-    var ip   = "54.191.207.214";
-    var port = 8080;
-    var type = req.params.type;
+  router.route('/client')
+  .get(function(req, res) {
+    console.log(dataJSON);
+//    res.send(JSON.stringify(dataJSON));
+   res.send(returnString);
+
+  })
+
+  .post(function(req, res) {
+    var ip   = req.body.ip;
+    var port = req.body.port;
+    var type = req.body.type;
+    console.log(type);
+    console.log(ip);
     var client = new net.Socket();
-    var returnString;
 
     client.connect(port, ip, function(c) {
       console.log('Connected');
@@ -44,19 +54,14 @@ var routes = function(router, app) {
 
     client.on('data', function(data) {
       returnString = data.toString('utf8');
-      res.write(returnString);
-      console.log("%%%%%%%%%");
-      console.log(returnString);
+      dataJSON = {"data" : returnString};
       client.end();
     });
 
     client.on('close', function() {
       console.log('Connection closed');
     });
-
-    //res.send(prettyjson.render(dataJSON, options));
-    console.log("###############################");
-    res.end();
+    res.send();
   });
 }
 
