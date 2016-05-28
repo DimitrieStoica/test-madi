@@ -1,1 +1,1 @@
-# MADI UI using node.js ande C++
+# MADI UI using node.js and C++
