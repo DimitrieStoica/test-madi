@@ -1,1 +1,1 @@
-# node-start-up-pack
+# MADI UI using node.js ande C++
